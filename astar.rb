@@ -23,7 +23,7 @@ class AStar # subclass me!
     # noop, override as a hook
   end
 
-
+  # ---------------
   # Convenience methods. Usually you won't need to override them.
 
   def is_goal?( node )
@@ -49,10 +49,12 @@ class AStar # subclass me!
 
   public
 
-  def search # The actual algorithm
+  # ---------------
+  # The actual algorithm
+
+  def search
     loop do
       node = find_next
-
       return nil if node.nil?
 
       visited(node)
