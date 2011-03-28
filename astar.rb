@@ -83,7 +83,7 @@ class AStar # subclass me!
         @parent[child] = parent
 
         @open << child unless @open.include?(child)
-        @open.sort_by!{ |n| estimated_cost( n ) }
+        @open = @open.sort_by{ |n| estimated_cost( n ) }
       end
   end
 
