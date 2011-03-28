@@ -34,8 +34,8 @@ class AStar # subclass me!
     @known_cost[ node ]
   end
 
-  def estimated_cost( current )
-    @known_cost[current] + @memoized_heuristic[current]
+  def estimated_cost( node )
+    @known_cost[node] + @memoized_heuristic[node]
   end
 
   attr_reader :start, :goal
@@ -56,7 +56,7 @@ class AStar # subclass me!
 
   def search
     loop do
-      node = cheapest_node
+      node = cheapest_open_node
       return nil if node.nil?
 
       visited(node)
@@ -94,7 +94,7 @@ class AStar # subclass me!
     end
   end
 
-  def cheapest_node
+  def cheapest_open_node
     @open.first
   end
 
