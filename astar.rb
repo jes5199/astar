@@ -35,16 +35,18 @@ class AStar # subclass me!
   end
 
   def estimated_cost( current )
-    @known_cost[current] + heuristic( current )
+    @known_cost[current] + @memoized_heuristic[current]
   end
 
   attr_reader :start, :goal
   def initialize( start, goal )
     @start, @goal = start, goal
-    @open = Set.new([start])
+    @open = [start]
     @parent = Hash.new
     @closed = Set.new
     @known_cost = {start => start_cost}
+
+    @memoized_heuristic = Hash.new{|hash, node| hash[node] = heuristic(node) }
   end
 
   public
@@ -54,7 +56,7 @@ class AStar # subclass me!
 
   def search
     loop do
-      node = find_next
+      node = cheapest_node
       return nil if node.nil?
 
       visited(node)
@@ -79,7 +81,9 @@ class AStar # subclass me!
       if ! known_cost(child) or known_cost(child) > child_cost # This path seems better than the best known to that node
         @known_cost[child] = child_cost
         @parent[child] = parent
-        @open << child
+
+        @open << child unless @open.include?(child)
+        @open.sort_by!{ |n| estimated_cost( n ) }
       end
   end
 
@@ -90,8 +94,8 @@ class AStar # subclass me!
     end
   end
 
-  def find_next
-    @open.sort_by{ |n| estimated_cost( n ) }.first
+  def cheapest_node
+    @open.first
   end
 
   def path_to(node)
