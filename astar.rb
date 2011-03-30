@@ -76,15 +76,15 @@ class AStar # subclass me!
   end
 
   def maybe_assign_parent( parent, child )
-      child_cost = known_cost(parent) + edge_cost( parent , child )
+    child_cost = known_cost(parent) + edge_cost( parent , child )
 
-      if ! known_cost(child) or known_cost(child) > child_cost # This path seems better than the best known to that node
-        @known_cost[child] = child_cost
-        @parent[child] = parent
+    if ! known_cost(child) or known_cost(child) > child_cost # This path seems better than the best known to that node
+      @known_cost[child] = child_cost
+      @parent[child] = parent
 
-        @open << child unless @open.include?(child)
-        @open = @open.sort_by{ |n| estimated_cost( n ) }
-      end
+      @open << child unless @open.include?(child)
+      @open = @open.sort_by{ |n| estimated_cost( n ) }
+    end
   end
 
   def search_neighbors( node )
