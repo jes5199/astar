@@ -104,6 +104,7 @@ class AStar # subclass me!
       path = [node] + path
       node = @parent[node]
     end
+    path
   end
 
 end
